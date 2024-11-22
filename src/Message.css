@@ -1,0 +1,16 @@
+/* Style for all images */
+img {
+    width: 7%; /* Ensure this fits the design, adjust if needed */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image does not distort */
+    margin-right: 10px; /* Space between image and text if necessary */
+  }
+  
+  /* Style for the content container */
+  .content {
+    display: flex;
+    flex-direction: row; /* Arrange items in a row (horizontally) */
+    gap: 20px; /* Spacing between elements in the row */
+    align-items: center; /* Vertically align content if needed */
+  }
+  
