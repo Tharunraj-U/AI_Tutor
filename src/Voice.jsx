@@ -122,7 +122,10 @@ const Voice = ({ aimessage }) => {
     <div className="voice-container">
       <div className="status-indicator">
         <div className={`status-dot ${isSpeaking ? "speaking" : ""}`}></div>
-        <p>Speaking: {isSpeaking ? "Yes" : "No"}</p>
+        <p style={{ color: "white" }}>
+  Speaking: {isSpeaking ? "Yes" : "No"}
+</p>
+
       </div>
 
       <div className="control-buttons">

@@ -1,36 +1,122 @@
 /* Chat Window */
+/* Chat Window */
+/* Chat Window styles */
 .chat-window {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    margin-bottom: 9% ;
-    overflow-y: auto;
-    background-color: white;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .message-container {
-    display: flex;
-    flex-direction: column;
-  }
-  
+  max-height: 80vh;  /* Adjust based on your layout */
+  overflow-y: auto;  /* Allow scrolling */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff00; /* Adjust to fit your theme */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  scroll-behavior: smooth; 
+  margin-bottom: 10%;/* Smooth scrolling effect */
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+/* Optional: Styling for an empty state if no messages */
+.chat-window:empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #aaa;
+}
+
+
+/* Message Container */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Consistent spacing between messages */
+}
+
+/* Individual Messages */
+.message {
+  padding: 15px 20px; /* Increased padding for more spacious message boxes */
+  max-width: 85%; /* Increased max-width for larger message boxes */
+  margin: 10px;
+  border-radius: 20px;
+  display: inline-block;
+  word-wrap: break-word;
+  font-size: 16px; /* Slightly larger font for better readability */
+  line-height: 1.5;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.message:hover {
+  transform: scale(1.02);
+}
+
+/* User Message */
+.user {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Bot Message */
+.bot {
+  align-self: flex-start;
+  background-color: #f1f0f0;
+  color: #444;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
   .message {
-    padding: 10px;
-    max-width: 80%;
-    margin: 5px;
-    border-radius: 20px;
-    display: inline-block;
-    word-wrap: break-word;
+    max-width: 90%; /* More room for messages on smaller screens */
+    font-size: 14px; /* Adjust font size for readability */
   }
-  
-  .user {
-    align-self: flex-end;
-    background-color: #dcf8c6;
+
+  .chat-window {
+    padding: 8px;
+    margin-bottom: 12%;
   }
-  
-  .bot {
-    align-self: flex-start;
-    background-color: #f1f0f0;
+}
+
+/* Scrollbar Styling */
+.chat-window::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.chat-window::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.chat-window::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Animations */
+@keyframes messageIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
-  
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.message {
+  animation: messageIn 0.3s ease-out;
+}

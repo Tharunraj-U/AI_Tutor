@@ -1,80 +1,99 @@
+:root {
+  --primary-color: #4caf50;
+  --primary-hover-color: #45a049;
+  --primary-active-color: #3d8b40;
+  --bg-color: rgba(14, 13, 13, 0.605);
+  --border-color: #e0e0e0;
+  --placeholder-color: #aaa;
+  --error-bg-color: #f8d7da;
+  --error-border-color: #f5c6cb;
+  --error-text-color: #721c24;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --focus-shadow-color: rgba(76, 175, 80, 0.2);
+  --button-shadow-color: rgba(76, 175, 80, 0.3);
+  --transition-time: 0.3s;
+}
+
 /* Container styles */
 .message-input-container {
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  border-top: 1px solid #e0e0e0;
-  position: fixed; /* Fix the bar at the bottom of the viewport */
+  padding: 15px 20px;
+  background: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+  position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000; /* Ensure it stays above other elements */
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  box-shadow: 0 -2px 10px var(--shadow-color);
+  gap: 15px;
+  border-radius: 12px 12px 0 0;
 }
 
 /* Input field styles */
 .message-input {
   flex-grow: 1;
-  padding: 12px 15px;
+  padding: 15px 20px;
   font-size: 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   outline: none;
-  transition: all 0.3s ease;
-  background: #f9f9f9;
-  margin-right: 10px;
+  transition: all var(--transition-time) ease;
+  background: #f9f9f9fc;
+  max-width: 80%;
 }
 
 .message-input:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 6px rgba(76, 175, 80, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 6px var(--focus-shadow-color);
   background: #fff;
 }
 
 .message-input::placeholder {
-  color: #aaa;
+  color: var(--placeholder-color);
   font-style: italic;
 }
 
 /* Send button styles */
 .send-button {
-  background: linear-gradient(145deg, #4caf50, #45a049);
+  background: linear-gradient(145deg, var(--primary-color), var(--primary-hover-color));
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+  transition: all var(--transition-time) ease;
+  box-shadow: 0 4px 10px var(--focus-shadow-color);
+  font-size: 16px;
 }
 
 .send-button:hover {
-  background: linear-gradient(145deg, #45a049, #3d8b40);
-  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+  background: linear-gradient(145deg, var(--primary-hover-color), var(--primary-active-color));
+  box-shadow: 0 6px 20px var(--button-shadow-color);
 }
 
 .send-button:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+  box-shadow: 0 2px 8px var(--focus-shadow-color);
 }
 
 /* Microphone styles */
 .mic1,
 .mic2 {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   margin: 0 10px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-time) ease;
   opacity: 0.8;
 }
 
 .mic1:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
   opacity: 1;
 }
 
@@ -88,7 +107,7 @@
     opacity: 0.8;
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.2);
     opacity: 1;
   }
   100% {
@@ -101,9 +120,9 @@
 .unsupported-message {
   text-align: center;
   padding: 20px;
-  color: #721c24;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
+  color: var(--error-text-color);
+  background-color: var(--error-bg-color);
+  border: 1px solid var(--error-border-color);
   border-radius: 8px;
   margin: 20px auto;
   max-width: 600px;
@@ -111,23 +130,54 @@
 
 /* Mobile responsiveness */
 @media screen and (max-width: 600px) {
+  /* Container adjustments */
   .message-input-container {
-    padding: 8px;
+    padding: 12px;
+    gap: 12px;
+    max-width: 100%;
+    border-radius: 8px;
   }
 
+  /* Input field */
   .message-input {
     padding: 10px;
     font-size: 14px;
+    max-width: 70%;
+  }
+
+  /* Send button */
+  .send-button {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  /* Mic icon adjustments */
+  .mic1,
+  .mic2 {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  /* Even smaller screens adjustments */
+  .message-input-container {
+    padding: 10px;
+  }
+
+  .message-input {
+    font-size: 12px;
+    padding: 8px;
   }
 
   .send-button {
+    font-size: 12px;
     padding: 8px 16px;
-    font-size: 14px;
   }
 
   .mic1,
   .mic2 {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 }
