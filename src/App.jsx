@@ -52,7 +52,7 @@ function App() {
       {/* Pass setBotmessage and usermessage to Ai */}
       <MessageInput sendMessage={sendMessage} />
       <Ai usermessage={usermessage} setBotmessage={setBotmessage} setUserMessage={clearMessage} />
-      <Voice aimessage={aimessage}/>
+     
      
     </div>
   );

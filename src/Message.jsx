@@ -1,6 +1,6 @@
 import React from "react";
 import "./Message.css";
-import female from "./assets/female.png"
+import female from "./assets/technology.png"
 
 const Message = ({ text, sender }) => {
   return (

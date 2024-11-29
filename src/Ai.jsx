@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import Voice from "./Voice";
 
 
 const Ai = ({ usermessage, setBotmessage,setUserMessage }) => {
   const apiKey = import.meta.env.VITE_API_KEY;
   const genAI = new GoogleGenerativeAI(apiKey);
+  const [aimessage,setAiMessage]=useState("");
   console.log(apiKey)
 
   // Define the generative AI model
@@ -25,6 +26,7 @@ const Ai = ({ usermessage, setBotmessage,setUserMessage }) => {
 
       // Add the AI response to the chat
       setBotmessage(aiResponse)
+      setAiMessage(aiResponse)
     } catch (error) {
       console.error("Error generating content:", error);
 
@@ -33,7 +35,8 @@ const Ai = ({ usermessage, setBotmessage,setUserMessage }) => {
     }
   };
 
-  return null; // No visible UI for this component, as it's only a logic handler
+  return (
+  <> <Voice  aimessage={aimessage}  userMessage={usermessage}/> </>); // No visible UI for this component, as it's only a logic handler
 };
 
 export default Ai;

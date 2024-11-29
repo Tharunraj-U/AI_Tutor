@@ -1,79 +1,99 @@
-import React, { useState, useEffect } from "react";
-import "./Voice.css"; // Make sure the CSS file is properly linked
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import "./Voice.css";
 
 const Voice = ({ aimessage }) => {
-  const [text, setText] = useState(aimessage); // Input text for TTS
-  const [voices, setVoices] = useState([]); // List of available voices
-  const [selectedVoice, setSelectedVoice] = useState(null); // Selected voice
-  const [isSpeaking, setIsSpeaking] = useState(false); // Speaking state
+  const [text, setText] = useState("");
+  const [voices, setVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  
+  const utteranceRef = useRef(null);
 
-  // Update text whenever aimessage changes
-  useEffect(() => {
-    setText(aimessage);
-    if (aimessage) handleSpeak(); // Automatically speak on message update
-  }, [aimessage]);
+  // Load voices
+  const loadVoices = useCallback(() => {
+    const availableVoices = window.speechSynthesis.getVoices();
+    setVoices(availableVoices);
 
-  // Load available voices and select default
-  useEffect(() => {
-    const loadVoices = () => {
-      const availableVoices = window.speechSynthesis.getVoices();
-      setVoices(availableVoices);
-
-      // Attempt to select a female voice by default
-      const femaleVoice = availableVoices.find((voice) =>
+    const preferredVoices = availableVoices.filter(
+      (voice) =>
+        voice.name.toLowerCase().includes("female") ||
         voice.name.toLowerCase().includes("hazel")
-      );
-      if (femaleVoice) setSelectedVoice(femaleVoice);
-    };
-
-    loadVoices();
-    window.speechSynthesis.onvoiceschanged = loadVoices; // Refresh voices when changed
+    );
+    setSelectedVoice(preferredVoices[0] || availableVoices[0]);
   }, []);
 
-  // Handle speaking the text
-  const handleSpeak = () => {
-    if (!text.trim()) return; // Do nothing if text is empty
+  useEffect(() => {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }, [loadVoices]);
 
-    const utterance = new SpeechSynthesisUtterance(text); // Create utterance object
-    // Set the selected voice if available
-    if (selectedVoice) utterance.voice = selectedVoice;
+  // Speak text when aimessage changes
+  useEffect(() => {
+    if (aimessage) {
+      handleSpeak(aimessage);
+    }
+  }, [aimessage]);
 
-    setIsSpeaking(true);
+  // Speak handler
+  const handleSpeak = useCallback((textToSpeak) => {
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    
+    setText(textToSpeak);
+    
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utteranceRef.current = utterance;
 
-    // Reset state when done speaking
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+    }
+
+    utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
 
-    // Speak the text
     window.speechSynthesis.speak(utterance);
-  };
+  }, [selectedVoice]);
 
   // Stop speaking
-  const handleStop = () => {
-    window.speechSynthesis.cancel(); // Stop speaking immediately
+  const handleStop = useCallback(() => {
+    window.speechSynthesis.cancel();
     setIsSpeaking(false);
-  };
+  }, []);
 
-  // Handle voice selection change
-  const handleVoiceChange = (event) => {
-    const selectedVoice = voices.find(
-      (voice) => voice.name === event.target.value
-    );
-    setSelectedVoice(selectedVoice);
-  };
+  // Voice change handler
+  const handleVoiceChange = useCallback(
+    (event) => {
+      const voice = voices.find((v) => v.name === event.target.value);
+      setSelectedVoice(voice);
+    },
+    [voices]
+  );
+
+  // Memoize voice options
+  const voiceOptions = useMemo(
+    () =>
+      voices.map((voice) => (
+        <option key={voice.name} value={voice.name}>
+          {voice.name} ({voice.lang})
+        </option>
+      )),
+    [voices]
+  );
 
   return (
     <div className="voice-container">
       <div className="status-indicator">
-        <div
-          className={`status-dot ${isSpeaking ? "speaking" : ""}`}
-        ></div>
+        <div className={`status-dot ${isSpeaking ? "speaking" : ""}`}></div>
         <p>Speaking: {isSpeaking ? "Yes" : "No"}</p>
       </div>
+
       <div className="control-buttons">
         <button
-          onClick={handleSpeak}
-          disabled={isSpeaking}
+          onClick={() => handleSpeak(text)}
+          disabled={isSpeaking || !text}
           className="voice-button speak-button"
         >
           Speak
@@ -87,7 +107,6 @@ const Voice = ({ aimessage }) => {
         </button>
       </div>
 
-      {/* Voice selector */}
       <div className="voice-select-container">
         <label htmlFor="voice-select" className="voice-select-label">
           Select Voice:
@@ -95,15 +114,11 @@ const Voice = ({ aimessage }) => {
         <select
           id="voice-select"
           onChange={handleVoiceChange}
-          value={selectedVoice ? selectedVoice.name : ""}
+          value={selectedVoice?.name || ""}
           disabled={isSpeaking}
           className="voice-select"
         >
-          {voices.map((voice) => (
-            <option key={voice.name} value={voice.name}>
-              {voice.name} ({voice.lang})
-            </option>
-          ))}
+          {voiceOptions}
         </select>
       </div>
     </div>
