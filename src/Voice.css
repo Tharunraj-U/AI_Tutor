@@ -1,159 +1,134 @@
-/* General container styling */
-.voice-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #000000f9; /* Light blue background */
-  border-bottom: 1px solid #e0e0e0;
-  position: sticky; /* Fix to the top of the page */
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Poppins', sans-serif;
-}
+/* General Styles */ 
+body {   
+  font-family: 'Arial', sans-serif;   
+  margin: 0;   
+  padding: 0;   
+  background-color: transparent;   
+  color: white; 
+}  
 
-/* Status indicator styles */
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* Voice Container */ 
+.voice-container {   
+  background-color: rgba(0, 0, 0, 0.5);   
+  border-radius: 8px;   
+  padding: 8px;   
+  max-width: 100%;   
+  margin: 0;   
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);   
+  display: flex;   
+  flex-direction: row;   
+  align-items: center;   
+  gap: 10px; 
+}  
 
+/* Status Indicator */ 
+.status-indicator {   
+  display: flex;   
+  align-items: center;   
+  gap: 5px; 
+}  
 
-.status-dot {
-  width: 12px; /* Slightly larger */
-  height: 12px; /* Slightly larger */
-  border-radius: 50%;
-  background-color: #f6efef; /* Default color */
+.status-dot {   
+  width: 10px;   
+  height: 10px;   
+  border-radius: 50%;   
+  background-color: #ff4d4d; /* Bright red */
+  transition: background-color 0.3s ease; 
+}  
+
+.status-dot.speaking {   
+  background-color: #4dff4d; /* Bright green */ 
+}  
+
+.status-indicator p {   
+  margin: 0;   
+  font-size: 12px; 
+}  
+
+/* Voice Selection Dropdown */ 
+.voice-select-container {   
+  flex-grow: 1; 
+}  
+
+.voice-select {   
+  background-color: #f9f9f9e1; /* Vibrant blue */
+  color: rgb(14, 13, 13);   
+  padding: 6px;   
+  border: none;   
+  border-radius: 5px;   
+  font-size: 12px;   
+  width: 100%;   
+  cursor: pointer;   
+  appearance: none;   
+  text-align: center;
   transition: background-color 0.3s ease;
-}
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}  
 
-.status-dot.speaking {
-  background-color: #4caf50; /* Green when speaking */
-}
+.voice-select:hover {   
+  background-color: #fbfdff; /* Darker blue on hover */ 
+}  
 
-.status-indicator p {
-  margin: 0;
-  font-size: 14px;
-  color: #333;
-}
+/* Control Buttons */ 
+.control-buttons {   
+  display: flex;   
+  gap: 5px; 
+}  
 
-/* Control buttons styling */
-.control-buttons {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
+.voice-button {   
+  background-color: #4CAF50; /* Green for start */
+  color: white;   
+  border: none;   
+  padding: 6px 10px;   
+  font-size: 12px;   
+  cursor: pointer;   
+  border-radius: 5px;   
+  text-align: center;   
+  transition: background-color 0.3s ease;   
+  min-width: 70px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}  
 
-.voice-button {
-  padding: 12px 20px; /* Larger padding for better button size */
-  font-size: 16px; /* Larger font size */
-  font-weight: 500;
-  border: none;
-  border-radius: 50%; /* Circular button for mic */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.voice-button:disabled {   
+  background-color: #9E9E9E;   
+  cursor: not-allowed; 
+}  
 
-.speak-button {
-  background-color: #4caf50;
-  color: white;
-  width: 60px; /* Set fixed size */
-  height: 60px; /* Set fixed size */
-}
+.voice-button:hover:enabled {   
+  background-color: #4c9950; /* Slightly darker green */ 
+}  
 
-.speak-button:hover {
-  background-color: #45a049;
-}
+.stop-button {   
+  background-color: #F44336; /* Vibrant red for stop */
+  transition: background-color 0.3s ease;
+}  
 
-.stop-button {
-  background-color: #f44336;
-  color: white;
-  width: 60px; /* Set fixed size */
-  height: 60px; /* Set fixed size */
-}
+.stop-button:hover:enabled {   
+  background-color: #D32F2F; /* Darker red on hover */ 
+}  
 
-.stop-button:hover {
-  background-color: #e53935;
-}
-
-.voice-button:disabled {
-  background-color: #ddd;
-  color: #aaa;
-  cursor: not-allowed;
-}
-
-/* Voice selection dropdown */
-.voice-select-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.voice-select-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #f4eaea;
-}
-
-.voice-select {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  outline: none;
-  background-color: #fff;
-  transition: all 0.3s ease;
-  width: 180px; /* Set width */
-}
-
-.voice-select:hover,
-.voice-select:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 6px rgba(76, 175, 80, 0.2);
-}
-
-/* Responsive design */
-@media screen and (max-width: 600px) {
-  .voice-container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-    padding: 15px;
-  }
-
-  .control-buttons {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .voice-select-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .voice-select {
-    width: 100%;
-  }
-
-  .voice-button {
-    width: 50px;
-    height: 50px;
-    font-size: 14px; /* Adjust button size */
-  }
-
-  .speak-button {
-    width: 50px;
-    height: 50px;
-  }
-
-  .stop-button {
-    width: 50px;
-    height: 50px;
-  }
+/* Mobile Responsiveness */ 
+@media (max-width: 600px) {   
+  .voice-container {     
+    flex-wrap: wrap;     
+    gap: 5px;   
+  }    
+  
+  .status-indicator,   
+  .voice-select-container,   
+  .control-buttons {     
+    width: 100%;     
+    display: flex;     
+    justify-content: center;   
+  }    
+  
+  .voice-button {     
+    flex-grow: 1;     
+    width: auto;     
+    padding: 8px;   
+  }    
+  
+  .voice-select {     
+    font-size: 14px;   
+  } 
 }

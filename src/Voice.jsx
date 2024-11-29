@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./Voice.css";
 
 const Voice = ({ aimessage }) => {
-  const [text, setText] = useState("");
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -107,59 +106,52 @@ const Voice = ({ aimessage }) => {
     [voices]
   );
 
-  // Memoize voice options
-  const voiceOptions = useMemo(
-    () =>
-      voices.map((voice) => (
-        <option key={voice.name} value={voice.name}>
-          {voice.name} ({voice.lang})
-        </option>
-      )),
-    [voices]
-  );
-
   return (
-    <div className="voice-container">
-      <div className="status-indicator">
-        <div className={`status-dot ${isSpeaking ? "speaking" : ""}`}></div>
-        <p style={{ color: "white" }}>
-  Speaking: {isSpeaking ? "Yes" : "No"}
-</p>
+    <>
+      
+      <div className="voice-container">
+        <div className="status-indicator">
+          <div className={`status-dot ${isSpeaking ? 'speaking' : ''}`}></div>
+          <span>Speaking: {isSpeaking ? 'Yes' : 'No'}</span>
+        </div>
 
-      </div>
+        <div className="control-buttons">
+          <button
+            onClick={speakChunks}
+            disabled={isSpeaking || !aimessage}
+            className="voice-button"
+          >
+            Speak
+          </button>
+          <button
+            onClick={handleStop}
+            disabled={!isSpeaking}
+            className="voice-button stop-button"
+          >
+            Stop
+          </button>
+        </div>
 
-      <div className="control-buttons">
-        <button
-          onClick={speakChunks}
-          disabled={isSpeaking || !aimessage}
-          className="voice-button speak-button"
-        >
-          Speak
-        </button>
-        <button
-          onClick={handleStop}
-          disabled={!isSpeaking}
-          className="voice-button stop-button"
-        >
-          Stop
-        </button>
+        <div className="voice-select-container">
+          <label htmlFor="voice-select" className="voice-select-label">
+            Select Voice:
+          </label>
+          <select
+            id="voice-select"
+            onChange={handleVoiceChange}
+            value={selectedVoice?.name || ""}
+            disabled={isSpeaking}
+            className="voice-select"
+          >
+            {voices.map((voice) => (
+              <option key={voice.name} value={voice.name}>
+                {voice.name} ({voice.lang})
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-
-      <div className="voice-select-container">
-        <label htmlFor="voice-select" className="voice-select-label">
-          Select Voice:
-        </label>
-        <select
-          id="voice-select"
-          onChange={handleVoiceChange}
-          value={selectedVoice?.name || ""}
-          disabled={isSpeaking}
-          className="voice-select"
-        >
-          {voiceOptions}
-        </select>
-      </div>
-    </div>
+    </>
   );
 };
 
