@@ -14,8 +14,8 @@ const MessageInput = ({ sendMessage }) => {
   const recognition = useMemo(() => {
     if (SpeechRecognition) {
       const instance = new SpeechRecognition();
-      instance.continuous = true;
-      instance.interimResults = true;
+      instance.continuous = true; // Keep recognizing continuously
+      instance.interimResults = true; // Get interim results as well
       return instance;
     }
     return null;
@@ -52,18 +52,21 @@ const MessageInput = ({ sendMessage }) => {
       setIsListening(true);
 
       recognition.onresult = (event) => {
-        let interimTranscript = "";
         let finalTranscript = "";
+        let interimTranscript = "";
 
-        for (let i = 0; i < event.results.length; i++) {
+        // Process results in reverse order
+        for (let i = event.results.length - 1; i >= 0; i--) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            finalTranscript += transcript + " ";
+            finalTranscript = transcript + " "; // Only append final results
           } else {
-            interimTranscript += transcript;
+            interimTranscript = transcript; // Update interim results
           }
         }
-        setInputText(finalTranscript + interimTranscript);
+
+        // Update input text with only the final transcript or interim (if no final)
+        setInputText(finalTranscript || interimTranscript);
       };
 
       recognition.onerror = (event) => {
@@ -72,7 +75,7 @@ const MessageInput = ({ sendMessage }) => {
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        setIsListening(false); // Reset listening state when recognition ends
       };
     }
   };
