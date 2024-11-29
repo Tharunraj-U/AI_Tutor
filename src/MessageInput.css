@@ -3,86 +3,72 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 35px;
-  box-shadow: 
-    0 2px 10px rgba(0, 0, 0, 0.1),
-    0 10px 20px rgba(0, 0, 0, 0.05);
-  position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.message-input-container:hover {
-  transform: translateY(-1px);
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.12),
-    0 12px 25px rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid #e0e0e0;
+  position: fixed; /* Fix the bar at the bottom of the viewport */
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Ensure it stays above other elements */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Input field styles */
 .message-input {
   flex-grow: 1;
-  padding: 12px 20px;
+  padding: 12px 15px;
   font-size: 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
   outline: none;
   transition: all 0.3s ease;
-  background: #f8f8f8;
+  background: #f9f9f9;
   margin-right: 10px;
 }
 
 .message-input:focus {
-  border-color: #4CAF50;
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+  border-color: #4caf50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.2);
   background: #fff;
 }
 
 .message-input::placeholder {
-  color: #999;
+  color: #aaa;
   font-style: italic;
 }
 
 /* Send button styles */
 .send-button {
-  position: relative;
-  background: linear-gradient(145deg, #4CAF50, #45a049);
+  background: linear-gradient(145deg, #4caf50, #45a049);
   color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
+  padding: 10px 20px;
+  border-radius: 20px;
   border: none;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 
-    0 4px 15px rgba(76, 175, 80, 0.2),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
 }
 
 .send-button:hover {
-  transform: translateY(-2px);
   background: linear-gradient(145deg, #45a049, #3d8b40);
-  box-shadow: 
-    0 6px 20px rgba(76, 175, 80, 0.3),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
 }
 
 .send-button:active {
-  transform: translateY(1px);
-  box-shadow: 
-    0 2px 10px rgba(76, 175, 80, 0.2),
-    inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
 }
 
 /* Microphone styles */
-.mic1, .mic2 {
+.mic1,
+.mic2 {
   width: 24px;
   height: 24px;
   cursor: pointer;
-  margin: 0 15px;
+  margin: 0 10px;
   transition: all 0.3s ease;
   opacity: 0.8;
 }
@@ -126,23 +112,22 @@
 /* Mobile responsiveness */
 @media screen and (max-width: 600px) {
   .message-input-container {
-    padding: 10px;
-    border-radius: 25px;
+    padding: 8px;
   }
 
   .message-input {
-    padding: 10px 15px;
+    padding: 10px;
     font-size: 14px;
   }
 
   .send-button {
-    padding: 10px 20px;
+    padding: 8px 16px;
     font-size: 14px;
   }
 
-  .mic1, .mic2 {
+  .mic1,
+  .mic2 {
     width: 20px;
     height: 20px;
-    margin: 0 10px;
   }
 }

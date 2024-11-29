@@ -1,165 +1,134 @@
+/* General container styling */
 .voice-container {
-    background: linear-gradient(145deg, #f6f8fd, #e8eaf1);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 
-      0 4px 15px rgba(0, 0, 0, 0.1),
-      inset 0 1px 2px rgba(255, 255, 255, 0.8);
-    max-width: 500px;
-    margin: 20px auto;
-  }
-  
-  /* Status indicator */
-  .status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 8px;
-  }
-  
-  .status-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ccc;
-    transition: background-color 0.3s ease;
-  }
-  
-  .status-dot.speaking {
-    background: #4CAF50;
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  
-  /* Control buttons */
-  .control-buttons {
-    display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky; /* Fix to the top of the page */
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Status indicator styles */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc; /* Default color */
+  transition: background-color 0.3s ease;
+}
+
+.status-dot.speaking {
+  background-color: #4caf50; /* Green when speaking */
+}
+
+.status-indicator p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Control buttons styling */
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.voice-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.speak-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.speak-button:hover {
+  background-color: #45a049;
+}
+
+.stop-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.stop-button:hover {
+  background-color: #e53935;
+}
+
+.voice-button:disabled {
+  background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Voice selection dropdown */
+.voice-select-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.voice-select-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.voice-select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.voice-select:hover,
+.voice-select:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.2);
+}
+
+/* Responsive design */
+@media screen and (max-width: 600px) {
+  .voice-container {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 15px;
-    margin-bottom: 20px;
+    padding: 15px;
   }
-  
-  .voice-button {
-    flex: 1;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 14px;
+
+  .control-buttons {
+    flex-wrap: wrap;
+    gap: 5px;
   }
-  
-  .speak-button {
-    background: linear-gradient(145deg, #4CAF50, #45a049);
-    color: white;
-    box-shadow: 
-      0 4px 15px rgba(76, 175, 80, 0.2),
-      inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .speak-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 
-      0 6px 20px rgba(76, 175, 80, 0.3),
-      inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .stop-button {
-    background: linear-gradient(145deg, #ff4444, #e60000);
-    color: white;
-    box-shadow: 
-      0 4px 15px rgba(255, 68, 68, 0.2),
-      inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .stop-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 
-      0 6px 20px rgba(255, 68, 68, 0.3),
-      inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .voice-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-  
-  /* Voice selector */
+
   .voice-select-container {
-    margin-top: 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .voice-select-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #333;
-  }
-  
+
   .voice-select {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    background: white;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23333'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
   }
-  
-  .voice-select:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
-    outline: none;
-  }
-  
-  .voice-select:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #f5f5f5;
-  }
-  
-  /* Animations */
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.1);
-      opacity: 0.8;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
-  /* Mobile responsiveness */
-  @media screen and (max-width: 600px) {
-    .voice-container {
-      margin: 10px;
-      padding: 15px;
-    }
-  
-    .control-buttons {
-      flex-direction: column;
-    }
-  
-    .voice-button {
-      width: 100%;
-      padding: 10px 20px;
-    }
-  }
+}

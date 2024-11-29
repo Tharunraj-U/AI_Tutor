@@ -48,10 +48,11 @@ function App() {
 
    return (
     <div className="app">
+       <Ai usermessage={usermessage} setBotmessage={setBotmessage} setUserMessage={clearMessage} />
       <ChatWindow messages={messages} />
       {/* Pass setBotmessage and usermessage to Ai */}
       <MessageInput sendMessage={sendMessage} />
-      <Ai usermessage={usermessage} setBotmessage={setBotmessage} setUserMessage={clearMessage} />
+     
      
      
     </div>

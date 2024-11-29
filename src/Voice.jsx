@@ -6,8 +6,10 @@ const Voice = ({ aimessage }) => {
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  
+
   const utteranceRef = useRef(null);
+  const chunksRef = useRef([]);
+  const currentChunkIndexRef = useRef(0);
 
   // Load voices
   const loadVoices = useCallback(() => {
@@ -27,40 +29,73 @@ const Voice = ({ aimessage }) => {
     window.speechSynthesis.onvoiceschanged = loadVoices;
   }, [loadVoices]);
 
-  // Speak text when aimessage changes
-  useEffect(() => {
-    if (aimessage) {
-      handleSpeak(aimessage);
-    }
-  }, [aimessage]);
+  // Split long text into chunks of 25 words each
+  const splitTextIntoChunks = useCallback((longText) => {
+    const cleanedText = longText
+      .replace(/\*\*\*/g, "")
+      .replace(/\*\*/g, "")
+      .replace(/\*/g, "")
+      .trim();
 
-  // Speak handler
-  const handleSpeak = useCallback((textToSpeak) => {
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
-    
-    setText(textToSpeak);
-    
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utteranceRef.current = utterance;
+    const words = cleanedText.split(/\s+/);
+    const chunks = [];
+
+    // Split text into chunks of 25 words
+    for (let i = 0; i < words.length; i += 25) {
+      chunks.push(words.slice(i, i + 25).join(" "));
+    }
+
+    return chunks;
+  }, []);
+
+  // Speak chunks sequentially
+  const speakChunks = useCallback(() => {
+    if (currentChunkIndexRef.current >= chunksRef.current.length) {
+      setIsSpeaking(false); // Finished speaking all chunks
+      currentChunkIndexRef.current = 0; // Reset chunk index
+      return;
+    }
+
+    const currentChunk = chunksRef.current[currentChunkIndexRef.current];
+    const utterance = new SpeechSynthesisUtterance(currentChunk);
 
     if (selectedVoice) {
       utterance.voice = selectedVoice;
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
+      utterance.rate = 0.9; // Normal speaking rate
+      utterance.pitch = 1.0; // Normal pitch
     }
 
+    // On start and end events to update speaking status
     utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+    utterance.onend = () => {
+      currentChunkIndexRef.current++;
+      speakChunks(); // Continue to next chunk after this one finishes
+    };
+    utterance.onerror = () => setIsSpeaking(false); // If error occurs, stop speaking
 
     window.speechSynthesis.speak(utterance);
   }, [selectedVoice]);
 
-  // Stop speaking
+  // Trigger speech when message changes
+  useEffect(() => {
+    if (aimessage) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
+      // Split the message into chunks
+      chunksRef.current = splitTextIntoChunks(aimessage);
+      currentChunkIndexRef.current = 0;
+
+      // Start speaking chunks
+      speakChunks();
+    }
+  }, [aimessage, splitTextIntoChunks, speakChunks]);
+
+  // Manual stop function
   const handleStop = useCallback(() => {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
+    currentChunkIndexRef.current = 0; // Reset chunk index
   }, []);
 
   // Voice change handler
@@ -92,8 +127,8 @@ const Voice = ({ aimessage }) => {
 
       <div className="control-buttons">
         <button
-          onClick={() => handleSpeak(text)}
-          disabled={isSpeaking || !text}
+          onClick={speakChunks}
+          disabled={isSpeaking || !aimessage}
           className="voice-button speak-button"
         >
           Speak

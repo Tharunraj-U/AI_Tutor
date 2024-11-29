@@ -1,12 +1,15 @@
 import React from "react";
 import "./Message.css";
-import female from "./assets/technology.png"
+import bot from "./assets/technology.png"
+import user from "./assets/panda.png"
 
 const Message = ({ text, sender }) => {
   return (
     <div   className={`message ${sender}`}>
       <div className="content">
-      {sender==="bot" && <img src={female} alt="Bot"></img>}
+      {sender==="bot" && <img src={bot} alt="Bot"></img>}
+      {sender==="user" && <img src={user} alt="Bot"></img>}
+      
         <p>{text}</p>
         </div>
     </div>

@@ -1,16 +1,74 @@
-/* Style for all images */
-img {
-    width: 7%; /* Ensure this fits the design, adjust if needed */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: cover; /* Ensure the image does not distort */
-    margin-right: 10px; /* Space between image and text if necessary */
+.message {
+  display: flex;
+  max-width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message .content {
+  display: flex;
+  align-items: center;
+  max-width: 80%;
+  padding: 10px;
+  border-radius: 12px;
+  gap: 10px;
+}
+
+.message.bot .content {
+  background-color: #f0f0f0;
+  flex-direction: row;
+}
+
+.message.user .content {
+
+  color:black;
+  flex-direction: row-reverse; /* This puts the user image on the right */
+}
+
+.message .content img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.message .content p {
+  margin: 0;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .message .content {
+      max-width: 90%;
+      padding: 8px;
+      gap: 8px;
   }
-  
-  /* Style for the content container */
-  .content {
-    display: flex;
-    flex-direction: row; /* Arrange items in a row (horizontally) */
-    gap: 20px; /* Spacing between elements in the row */
-    align-items: center; /* Vertically align content if needed */
+
+  .message .content img {
+      width: 35px;
+      height: 35px;
   }
-  
+}
+
+@media screen and (max-width: 480px) {
+  .message .content {
+      max-width: 95%;
+      padding: 6px;
+      gap: 6px;
+  }
+
+  .message .content img {
+      width: 30px;
+      height: 30px;
+  }
+}
