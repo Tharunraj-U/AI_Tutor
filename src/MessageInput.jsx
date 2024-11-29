@@ -14,8 +14,8 @@ const MessageInput = ({ sendMessage }) => {
   const recognition = useMemo(() => {
     if (SpeechRecognition) {
       const instance = new SpeechRecognition();
-      instance.continuous = false; // Disable continuous listening, so we get final results only
-      instance.interimResults = false; // Disable interim results to avoid repeated words
+      instance.continuous = false; // Only take the final transcript, no continuous results
+      instance.interimResults = true; // Allow interim results (to update the input as speech happens)
       return instance;
     }
     return null;
@@ -23,10 +23,10 @@ const MessageInput = ({ sendMessage }) => {
 
   useEffect(() => {
     if (isListening) {
-      setMic(mic2); // Change microphone icon to indicate listening
+      setMic(mic2);
       setMicClass("mic2");
     } else {
-      setMic(mic1); // Default microphone icon when not listening
+      setMic(mic1);
       setMicClass("mic1");
     }
   }, [isListening]);
@@ -45,24 +45,25 @@ const MessageInput = ({ sendMessage }) => {
     if (!recognition) return;
 
     if (isListening) {
-      recognition.stop(); // Stop listening if already listening
+      recognition.stop();
       setIsListening(false);
     } else {
-      recognition.start(); // Start listening when microphone is clicked
+      recognition.start();
       setIsListening(true);
 
       recognition.onresult = (event) => {
         let finalTranscript = "";
 
-        // Process only the final transcript (not interim)
+        // Loop through all results, and only use final results (avoid interim)
         for (let i = event.results.length - 1; i >= 0; i--) {
+          const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            finalTranscript = event.results[i][0].transcript; // Get the final result
-            break; // Stop at the first final result
+            finalTranscript = transcript; // Use final result only
+            break; // Stop processing further once final result is found
           }
         }
 
-        setInputText(finalTranscript); // Set the input text to the final result
+        setInputText(finalTranscript); // Set the input text to the final transcript
       };
 
       recognition.onerror = (event) => {
@@ -71,9 +72,10 @@ const MessageInput = ({ sendMessage }) => {
       };
 
       recognition.onend = () => {
-        // After recognition ends, send the message and clear the input field
-        setIsListening(false); // Stop the listening state
-        handleSend(); // Automatically send the message
+        setIsListening(false); // Stop listening once the recognition ends
+        if (inputText.trim()) {
+          handleSend(); // Automatically send the message after recognition ends if there's input
+        }
       };
     }
   };
